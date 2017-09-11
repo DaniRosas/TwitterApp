@@ -1,5 +1,6 @@
 package com.examples.twitterapp.timeline;
 
+import com.examples.twitterapp.timeline.entities.Post;
 import com.examples.twitterapp.timeline.events.TimelineEvent;
 
 /**
@@ -12,4 +13,6 @@ public interface TimelinePresenter {
     void onDestroy();
     void getPostTweets();
     void onEventMainThread(TimelineEvent event);
+
+    void toggleFavorite(Post tweet);
 }

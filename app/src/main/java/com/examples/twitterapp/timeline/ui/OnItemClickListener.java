@@ -8,4 +8,6 @@ import com.examples.twitterapp.timeline.entities.Post;
 
 public interface OnItemClickListener {
     void onItemClick(Post tweet);
+
+    void onFavClick(Post tweet);
 }

@@ -14,6 +14,9 @@ public interface TimelineView {
     void showProgress();
     void hideProgress();
 
+    void postUpdated();
+    void postDeleted(Post post);
+
     void onHashtagsError(String error);
     void setPosts(List<Post> items);
 }

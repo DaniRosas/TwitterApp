@@ -2,6 +2,7 @@ package com.examples.twitterapp;
 
 import android.app.Application;
 
+import com.raizlabs.android.dbflow.config.FlowManager;
 import com.twitter.sdk.android.core.Twitter;
 
 /**
@@ -13,6 +14,8 @@ public class TwitterApp extends Application {
     public void onCreate() {
         super.onCreate();
         Twitter.initialize(this);
+        FlowManager.init(this);
+
     }
 
 }

@@ -75,7 +75,6 @@ public class TimelineFragment extends Fragment implements TimelineView, OnItemCl
                 .timelineModule(new TimelineModule(this, this))
                 .build()
                 .inject(this);
-
     }
 
     @Override
@@ -121,6 +120,16 @@ public class TimelineFragment extends Fragment implements TimelineView, OnItemCl
     }
 
     @Override
+    public void postUpdated() {
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void postDeleted(Post post) {
+
+    }
+
+    @Override
     public void onHashtagsError(String error) {
         Snackbar.make(container, error, Snackbar.LENGTH_SHORT).show();
 
@@ -135,5 +144,10 @@ public class TimelineFragment extends Fragment implements TimelineView, OnItemCl
     public void onItemClick(Post tweet) {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(tweet.getTweetURL()));
         startActivity(intent);
+    }
+
+    @Override
+    public void onFavClick(Post tweet) {
+        timelinesPresenter.toggleFavorite(tweet);
     }
 }

@@ -9,9 +9,13 @@ import java.util.List;
  */
 
 public class TimelineEvent {
+
+    private int type;
     private String error;
     private List<Post> hashtags;
-
+    public final static int READ_EVENT = 0;
+    public final static int UPDATE_EVENT = 1;
+    public final static int DELETE_EVENT = 2;
     public String getError() {
         return error;
     }
@@ -26,5 +30,13 @@ public class TimelineEvent {
 
     public void setHashtags(List<Post> hashtags) {
         this.hashtags = hashtags;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

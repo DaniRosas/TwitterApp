@@ -1,5 +1,6 @@
 package com.examples.twitterapp.timeline;
 
+import com.examples.twitterapp.StoredFavoritesInteractor;
 import com.examples.twitterapp.libs.base.Eventbus;
 import com.examples.twitterapp.timeline.entities.Post;
 import com.examples.twitterapp.timeline.events.TimelineEvent;
@@ -18,11 +19,13 @@ public class TimelinePresenterImpl implements TimelinePresenter {
     private Eventbus eventBus;
     private TimelineView timelineView;
     private TimelineInteractor timelineInteractor;
+    private StoredFavoritesInteractor storedInteractor;
 
-    public TimelinePresenterImpl(Eventbus eventBus, TimelineView timelineView, TimelineInteractor timelineInteractor) {
+    public TimelinePresenterImpl(Eventbus eventBus, TimelineView timelineView, TimelineInteractor timelineInteractor, StoredFavoritesInteractor storedFavoritesInteractor) {
         this.eventBus = eventBus;
         this.timelineView = timelineView;
         this.timelineInteractor = timelineInteractor;
+        this.storedInteractor = storedFavoritesInteractor;
     }
 
     @Override
@@ -66,6 +69,27 @@ public class TimelinePresenterImpl implements TimelinePresenter {
                     this.timelineView.setPosts(items);
                 }
             }
+
+            switch (event.getType()){
+                case TimelineEvent.READ_EVENT:
+                    timelineView.setPosts(event.getHashtags());
+                    break;
+                case TimelineEvent.UPDATE_EVENT:
+                    timelineView.postUpdated();
+                    break;
+                case TimelineEvent.DELETE_EVENT:
+                    Post post = event.getHashtags().get(0);
+                    timelineView.postDeleted(post);
+                    break;
+
+            }
         }
+    }
+
+    @Override
+    public void toggleFavorite(Post tweet) {
+        boolean fav = tweet.getFav();
+        tweet.setFav(!fav);
+        storedInteractor.executeUpdate(tweet);
     }
 }

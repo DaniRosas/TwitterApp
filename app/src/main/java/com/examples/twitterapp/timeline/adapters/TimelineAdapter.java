@@ -48,6 +48,12 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
         holder.post.setText(tweet.getPost());
         holder.setItems(tweet.getHashtags());
 
+        if(tweet.getFav()){
+            holder.fav.setImageResource(R.drawable.ic_favorite_white_24dp);
+        }else{
+            holder.fav.setImageResource(R.drawable.ic_favorite_border_white_24dp);
+        }
+
 
     }
 
@@ -96,6 +102,13 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
                 @Override
                 public void onClick(View view) {
                     listener.onItemClick(tweet);
+                }
+            });
+
+            fav.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onFavClick(tweet);
                 }
             });
 

@@ -4,10 +4,12 @@ import com.examples.twitterapp.api.CustomTwitterApiClient;
 import com.examples.twitterapp.libs.base.Eventbus;
 import com.examples.twitterapp.timeline.entities.Post;
 import com.examples.twitterapp.timeline.events.TimelineEvent;
+import com.raizlabs.android.dbflow.list.FlowCursorList;
 import com.twitter.sdk.android.core.models.HashtagEntity;
 import com.twitter.sdk.android.core.models.Tweet;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -63,6 +65,24 @@ public class TimelineRepositoryImpl implements TimelineRepository {
 
     }
 
+    @Override
+    public void updateTweet(Post tweet) {
+        tweet.update();
+        post();
+    }
+
+    @Override
+    public void deleteTweet(Post tweet) {
+        tweet.delete();
+        post(TimelineEvent.DELETE_EVENT, Arrays.asList(tweet));
+    }
+
+    @Override
+    public void getSavedFavorites() {
+        FlowCursorList<Post> storedRecipes = new FlowCursorList<>(true, Post.class);
+        post(TimelineEvent.READ_EVENT, storedRecipes.getAll());
+    }
+
     private boolean checkIfTweetHasHashtags(Tweet tweet) {
         return  tweet.entities != null &&
                 tweet.entities.hashtags != null &&
@@ -79,5 +99,19 @@ public class TimelineRepositoryImpl implements TimelineRepository {
         TimelineEvent event = new TimelineEvent();
         event.setHashtags(items);
         eventBus.post(event);
+    }
+
+    private void post(int type, List<Post> posts) {
+        TimelineEvent event = new TimelineEvent();
+        event.setHashtags(posts);
+        event.setType(type);
+        eventBus.post(event);
+    }
+
+    private void post(int type) {
+        post(type, null);
+    }
+    private void post(){
+        post(TimelineEvent.UPDATE_EVENT, null);
     }
 }

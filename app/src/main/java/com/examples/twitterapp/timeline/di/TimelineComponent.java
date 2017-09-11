@@ -12,8 +12,14 @@ import dagger.Component;
  * Created by DaniRosas on 10/9/17.
  */
 
-@Singleton @Component(modules = {TimelineModule.class, LibsModule.class, TwitterAppModule.class})
+@Component
+        (modules = {
+                TimelineModule.class,
+                LibsModule.class,
+                TwitterAppModule.class
+        })
 
+@Singleton
 public interface TimelineComponent {
     void inject(TimelineFragment fragment);
 }

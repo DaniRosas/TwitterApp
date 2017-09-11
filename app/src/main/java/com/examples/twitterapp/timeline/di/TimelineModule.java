@@ -2,6 +2,8 @@ package com.examples.twitterapp.timeline.di;
 
 import android.content.Context;
 
+import com.examples.twitterapp.StoredFavoritesInteractor;
+import com.examples.twitterapp.StoredFavoritesInteractorImpl;
 import com.examples.twitterapp.api.CustomTwitterApiClient;
 import com.examples.twitterapp.libs.base.Eventbus;
 import com.examples.twitterapp.timeline.TimelineInteractor;
@@ -66,8 +68,8 @@ public class TimelineModule {
 
     @Provides
     @Singleton
-    TimelinePresenter provideTimelinePresenter(TimelineView view, TimelineInteractor interactor, Eventbus eventBus) {
-        return new TimelinePresenterImpl(eventBus, view, interactor);
+    TimelinePresenter provideTimelinePresenter(TimelineView view, TimelineInteractor interactor, Eventbus eventBus, StoredFavoritesInteractor storedFavoritesInteractor) {
+        return new TimelinePresenterImpl(eventBus, view, interactor, storedFavoritesInteractor);
     }
 
     @Provides
@@ -80,6 +82,11 @@ public class TimelineModule {
     @Singleton
     TimelineRepository provideTimelineRepository(CustomTwitterApiClient client, Eventbus eventBus) {
         return new TimelineRepositoryImpl(eventBus, client);
+    }
+
+    @Provides @Singleton
+    StoredFavoritesInteractor provideStoredRecipesInteractor(TimelineRepository repository) {
+        return new StoredFavoritesInteractorImpl(repository);
     }
 
     @Provides

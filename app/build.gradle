@@ -28,6 +28,10 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    dexOptions {
+        incremental false
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -69,5 +73,17 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'javax.annotation:javax.annotation-api:1.2'
     compile "com.android.support:support-v4:$rootProject.ext.supportLibraryVersion"
+
+
+    annotationProcessor "com.github.Raizlabs.DBFlow:dbflow-processor:$rootProject.ext.dbflowVersion"
+
+    compile "com.github.Raizlabs.DBFlow:dbflow-core:$rootProject.ext.dbflowVersion"
+    compile "com.github.Raizlabs.DBFlow:dbflow:$rootProject.ext.dbflowVersion"
+
+    // RXJava 1 support
+    //compile "com.github.Raizlabs.DBFlow:dbflow-rx:$rootProject.ext.dbflowVersion"
+    // RXJava 2 support
+    //compile "com.github.Raizlabs.DBFlow:dbflow-rx2:$rootProject.ext.dbflowVersion"
+
     testCompile 'junit:junit:4.12'
 }
