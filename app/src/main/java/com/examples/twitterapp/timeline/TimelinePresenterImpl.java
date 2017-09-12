@@ -1,6 +1,10 @@
 package com.examples.twitterapp.timeline;
 
+import android.content.Context;
+
 import com.examples.twitterapp.StoredFavoritesInteractor;
+import com.examples.twitterapp.StoredFavoritesInteractorImpl;
+import com.examples.twitterapp.libs.GreenRobotEventBus;
 import com.examples.twitterapp.libs.base.Eventbus;
 import com.examples.twitterapp.timeline.entities.Post;
 import com.examples.twitterapp.timeline.events.TimelineEvent;
@@ -26,6 +30,14 @@ public class TimelinePresenterImpl implements TimelinePresenter {
         this.timelineView = timelineView;
         this.timelineInteractor = timelineInteractor;
         this.storedInteractor = storedFavoritesInteractor;
+    }
+
+    public TimelinePresenterImpl(TimelineView timelineView) {
+        this.timelineView = timelineView;
+        eventBus = GreenRobotEventBus.getInstance();
+        storedInteractor = new StoredFavoritesInteractorImpl();
+        this.timelineInteractor = new TimelineInteractorImpl();
+
     }
 
     @Override
@@ -87,9 +99,15 @@ public class TimelinePresenterImpl implements TimelinePresenter {
     }
 
     @Override
-    public void toggleFavorite(Post tweet) {
+    public void toggleFavorite(Post tweet, Context context) {
         boolean fav = tweet.getFav();
         tweet.setFav(!fav);
-        storedInteractor.executeUpdate(tweet);
+        storedInteractor.executeUpdate(tweet, context);
+    }
+
+    @Override
+    public void onCreate() {
+        eventBus.register(this);
+
     }
 }

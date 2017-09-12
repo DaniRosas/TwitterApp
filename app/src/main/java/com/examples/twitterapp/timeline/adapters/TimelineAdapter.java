@@ -108,7 +108,13 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
             fav.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onFavClick(tweet);
+                    listener.onFavClick(tweet, context);
+                    if(tweet.getFav()){
+                        fav.setImageResource(R.drawable.ic_favorite_white_24dp);
+                    }else{
+                        fav.setImageResource(R.drawable.ic_favorite_border_white_24dp);
+                    }
+
                 }
             });
 

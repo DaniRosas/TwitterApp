@@ -1,6 +1,7 @@
 package com.examples.twitterapp.timeline.ui;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,34 +16,30 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
 import com.examples.twitterapp.R;
-import com.examples.twitterapp.TwitterAppModule;
-import com.examples.twitterapp.libs.di.LibsModule;
 import com.examples.twitterapp.timeline.TimelinePresenter;
+import com.examples.twitterapp.timeline.TimelinePresenterImpl;
 import com.examples.twitterapp.timeline.adapters.TimelineAdapter;
-import com.examples.twitterapp.timeline.di.DaggerTimelineComponent;
-import com.examples.twitterapp.timeline.di.TimelineModule;
 import com.examples.twitterapp.timeline.entities.Post;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import javax.inject.Inject;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class TimelineFragment extends Fragment implements TimelineView, OnItemClickListener {
 
-    @Inject
     TimelineAdapter adapter;
-    @Inject
     TimelinePresenter timelinesPresenter;
 
     FrameLayout container;
     ProgressBar progressBar;
     RecyclerView recyclerView;
+    private Context context;
 
     public TimelineFragment() {
         // Required empty public constructor
+
     }
 
 
@@ -52,35 +49,31 @@ public class TimelineFragment extends Fragment implements TimelineView, OnItemCl
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_content, container, false);
 
+        context = getActivity().getApplicationContext();
+
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-        setupInjection();
-        setupRecyclerView();
 
-        timelinesPresenter.getPostTweets();
+        timelinesPresenter = new TimelinePresenterImpl(this);
+        timelinesPresenter.onCreate();
+
+        setupAdapter();
+
+
         return view;
+    }
+
+    private void setupAdapter() {
+
+        adapter = new TimelineAdapter(context, new ArrayList<Post>(), this);
+        timelinesPresenter.getPostTweets();
+        setupRecyclerView();
     }
 
     private void setupRecyclerView() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
-    }
-
-    private void setupInjection() {
-        DaggerTimelineComponent
-                .builder()
-                .libsModule(new LibsModule(this))
-                .twitterAppModule(new TwitterAppModule(getContext()))
-                .timelineModule(new TimelineModule(this, this))
-                .build()
-                .inject(this);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        timelinesPresenter.onResume();
     }
 
     @Override
@@ -147,7 +140,8 @@ public class TimelineFragment extends Fragment implements TimelineView, OnItemCl
     }
 
     @Override
-    public void onFavClick(Post tweet) {
-        timelinesPresenter.toggleFavorite(tweet);
+    public void onFavClick(Post tweet, Context context) {
+
+        timelinesPresenter.toggleFavorite(tweet, context);
     }
 }

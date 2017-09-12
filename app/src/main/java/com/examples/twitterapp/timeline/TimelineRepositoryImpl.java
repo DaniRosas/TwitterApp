@@ -1,15 +1,19 @@
 package com.examples.twitterapp.timeline;
 
+import android.content.Context;
+
 import com.examples.twitterapp.api.CustomTwitterApiClient;
+import com.examples.twitterapp.favorites.db.Favorite;
+import com.examples.twitterapp.favorites.db.FavoritesDbHelper;
+import com.examples.twitterapp.libs.GreenRobotEventBus;
 import com.examples.twitterapp.libs.base.Eventbus;
 import com.examples.twitterapp.timeline.entities.Post;
 import com.examples.twitterapp.timeline.events.TimelineEvent;
-import com.raizlabs.android.dbflow.list.FlowCursorList;
+import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.models.HashtagEntity;
 import com.twitter.sdk.android.core.models.Tweet;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -21,13 +25,19 @@ import retrofit2.Response;
 
 public class TimelineRepositoryImpl implements TimelineRepository {
 
-    private final Eventbus eventBus;
-    private final CustomTwitterApiClient client;
+    private Eventbus eventBus;
+    private CustomTwitterApiClient client;
+    private FavoritesDbHelper favoritesDbHelper;
     private final static int TWEET_COUNT = 100;
 
     public TimelineRepositoryImpl(Eventbus eventBus, CustomTwitterApiClient client) {
         this.eventBus = eventBus;
         this.client = client;
+    }
+
+    public TimelineRepositoryImpl() {
+        this.client = new CustomTwitterApiClient(TwitterCore.getInstance().getSessionManager().getActiveSession());
+
     }
 
     public void getPosts() {
@@ -66,21 +76,25 @@ public class TimelineRepositoryImpl implements TimelineRepository {
     }
 
     @Override
-    public void updateTweet(Post tweet) {
-        tweet.update();
-        post();
+    public void updateTweet(Post tweet, Context context) {
+        favoritesDbHelper = new FavoritesDbHelper(context);
+        Favorite fav = new Favorite(tweet.getId(),tweet.getPost(),tweet.getTime());
+
+        if(!tweet.getFav()){
+            favoritesDbHelper.deleteFavorite(fav.getId());
+        }else {
+            favoritesDbHelper.saveFavorite(fav);
+        }
     }
 
     @Override
     public void deleteTweet(Post tweet) {
-        tweet.delete();
-        post(TimelineEvent.DELETE_EVENT, Arrays.asList(tweet));
     }
 
     @Override
     public void getSavedFavorites() {
-        FlowCursorList<Post> storedRecipes = new FlowCursorList<>(true, Post.class);
-        post(TimelineEvent.READ_EVENT, storedRecipes.getAll());
+        //FlowCursorList<Post> storedRecipes = new FlowCursorList<>(true, Post.class);
+        //post(TimelineEvent.READ_EVENT, storedRecipes.getAll());
     }
 
     private boolean checkIfTweetHasHashtags(Tweet tweet) {
@@ -98,6 +112,8 @@ public class TimelineRepositoryImpl implements TimelineRepository {
     private void postEvent(List<Post> items) {
         TimelineEvent event = new TimelineEvent();
         event.setHashtags(items);
+        Eventbus eventBus = GreenRobotEventBus.getInstance();
+
         eventBus.post(event);
     }
 

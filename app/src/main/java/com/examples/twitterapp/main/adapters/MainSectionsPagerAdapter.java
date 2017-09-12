@@ -33,4 +33,10 @@ public class MainSectionsPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         return titles[position];
     }
+
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+
+    }
 }

@@ -1,5 +1,7 @@
 package com.examples.twitterapp;
 
+import android.content.Context;
+
 import com.examples.twitterapp.timeline.entities.Post;
 
 /**
@@ -9,6 +11,6 @@ import com.examples.twitterapp.timeline.entities.Post;
 
 
 public interface StoredFavoritesInteractor {
-    void executeUpdate(Post tweet);
+    void executeUpdate(Post tweet, Context context);
     void executeDelete(Post tweet);
 }

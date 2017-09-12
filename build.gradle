@@ -6,8 +6,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.3'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
-
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -31,11 +30,11 @@ ext{
     buildToolsVersion = '24.0.2'
 
     supportLibraryVersion = '25.3.1'
-    designLibraryVersion = '24.2.0'
+    designLibraryVersion = '25.3.1'
     twitterVersion = '3.1.1'
     butterknifeVersion = '7.0.1'
     eventbusVersion = '3.0.0'
-    dbflowVersion = "3.0.0-beta3"
+    dbflowVersion = "4.0.1"
 
     retrofitVersion = '2.3.0'
     daggerVersion = '2.0.1'

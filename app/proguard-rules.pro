@@ -26,3 +26,5 @@
 -dontwarn okio.**
 -dontwarn javax.annotation.**
 -keep class * extends com.raizlabs.android.dbflow.config.DatabaseHolder { *; }
+-keep class net.sqlcipher.** { *; }
+-dontwarn net.sqlcipher.**

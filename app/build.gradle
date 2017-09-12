@@ -1,24 +1,14 @@
-buildscript {
-    repositories {
-        maven { url 'https://maven.fabric.io/public' }
-    }
-
-    dependencies {
-        classpath 'io.fabric.tools:gradle:1.24.1'
-
-    }
-}
 apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
-apply plugin: 'com.neenbedankt.android-apt'
+
+
 
 repositories {
-    maven { url 'https://maven.fabric.io/public' }
+    mavenCentral()
 }
 
 
 android {
-    compileSdkVersion 24
+    compileSdkVersion 25
     buildToolsVersion '25.0.0'
     defaultConfig {
         applicationId "com.examples.twitterapp"
@@ -27,9 +17,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-    }
-    dexOptions {
-        incremental false
+        multiDexEnabled true
+
     }
 
     buildTypes {
@@ -41,6 +30,7 @@ android {
             resValue "string", "FABRIC_API_KEY", project.property("FABRIC_API_KEY")
         }
         debug {
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "String", "CONSUMER_KEY", project.property('CONSUMER_KEY')
             buildConfigField "String", "CONSUMER_SECRET", project.property('CONSUMER_SECRET')
         }
@@ -56,29 +46,17 @@ dependencies {
     })
     compile "com.twitter.sdk.android:twitter:$rootProject.ext.twitterVersion"
     compile "org.greenrobot:eventbus:$rootProject.ext.eventbusVersion"
-    compile "com.google.dagger:dagger:$rootProject.ext.daggerVersion"
-    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.ext.daggerVersion"
-    apt "com.google.dagger:dagger-compiler:$rootProject.ext.daggerVersion"
+
+
     compile "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofitVersion"
     compile "com.android.support:recyclerview-v7:$rootProject.ext.supportLibraryVersion"
     compile "com.android.support:appcompat-v7:$rootProject.ext.supportLibraryVersion"
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar')
-            {
-                transitive = true;
-            }
-
-    provided 'javax.annotation:jsr250-api:1.0'
 
     compile "com.android.support:design:$rootProject.ext.designLibraryVersion"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'javax.annotation:javax.annotation-api:1.2'
     compile "com.android.support:support-v4:$rootProject.ext.supportLibraryVersion"
 
-
-    annotationProcessor "com.github.Raizlabs.DBFlow:dbflow-processor:$rootProject.ext.dbflowVersion"
-
-    compile "com.github.Raizlabs.DBFlow:dbflow-core:$rootProject.ext.dbflowVersion"
-    compile "com.github.Raizlabs.DBFlow:dbflow:$rootProject.ext.dbflowVersion"
 
     // RXJava 1 support
     //compile "com.github.Raizlabs.DBFlow:dbflow-rx:$rootProject.ext.dbflowVersion"

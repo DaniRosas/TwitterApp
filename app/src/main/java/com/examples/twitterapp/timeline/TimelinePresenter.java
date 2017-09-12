@@ -1,5 +1,7 @@
 package com.examples.twitterapp.timeline;
 
+import android.content.Context;
+
 import com.examples.twitterapp.timeline.entities.Post;
 import com.examples.twitterapp.timeline.events.TimelineEvent;
 
@@ -14,5 +16,7 @@ public interface TimelinePresenter {
     void getPostTweets();
     void onEventMainThread(TimelineEvent event);
 
-    void toggleFavorite(Post tweet);
+    void toggleFavorite(Post tweet, Context context);
+
+    void onCreate();
 }

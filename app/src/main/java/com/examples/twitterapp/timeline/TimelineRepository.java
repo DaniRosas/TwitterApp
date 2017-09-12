@@ -1,5 +1,7 @@
 package com.examples.twitterapp.timeline;
 
+import android.content.Context;
+
 import com.examples.twitterapp.timeline.entities.Post;
 
 /**
@@ -8,7 +10,7 @@ import com.examples.twitterapp.timeline.entities.Post;
 
 public interface TimelineRepository {
     void getPosts();
-    void updateTweet(Post tweet);
+    void updateTweet(Post tweet, Context context);
     void deleteTweet(Post tweet);
     void getSavedFavorites();
 }

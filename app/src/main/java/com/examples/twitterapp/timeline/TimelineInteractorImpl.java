@@ -13,6 +13,10 @@ public class TimelineInteractorImpl implements TimelineInteractor {
         this.repository = repository;
     }
 
+    public TimelineInteractorImpl() {
+        this.repository = new TimelineRepositoryImpl();
+    }
+
     @Override
     public void getTimelineItemsList() {
         repository.getPosts();

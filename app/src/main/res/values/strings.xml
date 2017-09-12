@@ -10,6 +10,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="message.no.favourites">You don\'t have favourite tweets</string>
 
 
 </resources>

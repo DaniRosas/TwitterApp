@@ -12,7 +12,7 @@ import android.view.MenuItem;
 
 import com.examples.twitterapp.LoginActivity;
 import com.examples.twitterapp.R;
-import com.examples.twitterapp.favourites.FavouritesFragment;
+import com.examples.twitterapp.favorites.ui.FavouritesFragment;
 import com.examples.twitterapp.main.adapters.MainSectionsPagerAdapter;
 import com.examples.twitterapp.timeline.ui.TimelineFragment;
 import com.twitter.sdk.android.core.TwitterCore;
@@ -40,12 +40,32 @@ public class MainActivity extends AppCompatActivity {
         Fragment[] fragments = new Fragment[] {new TimelineFragment(),
                 new FavouritesFragment()};
         String[] titles = new String[]{getString(R.string.main_header_timeline), getString(R.string.main_header_favourites)};
-        MainSectionsPagerAdapter mainSectionsPagerAdapter =
+        final MainSectionsPagerAdapter mainSectionsPagerAdapter =
                                     new MainSectionsPagerAdapter(getSupportFragmentManager(),
                                                                 fragments, titles);
         viewPager.setAdapter(mainSectionsPagerAdapter);
 
         tabLayout.setupWithViewPager(viewPager);
+
+
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(position == 1) {
+                    mainSectionsPagerAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override

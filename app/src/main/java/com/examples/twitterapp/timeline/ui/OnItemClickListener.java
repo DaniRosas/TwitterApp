@@ -1,5 +1,7 @@
 package com.examples.twitterapp.timeline.ui;
 
+import android.content.Context;
+
 import com.examples.twitterapp.timeline.entities.Post;
 
 /**
@@ -9,5 +11,5 @@ import com.examples.twitterapp.timeline.entities.Post;
 public interface OnItemClickListener {
     void onItemClick(Post tweet);
 
-    void onFavClick(Post tweet);
+    void onFavClick(Post tweet, Context context);
 }

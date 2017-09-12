@@ -1,11 +1,6 @@
 package com.examples.twitterapp.timeline.entities;
 
-import com.examples.twitterapp.db.PostsDatabase;
 import com.google.gson.annotations.SerializedName;
-import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.PrimaryKey;
-import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import java.util.List;
 
@@ -13,22 +8,21 @@ import java.util.List;
  * Created by DaniRosas on 10/9/17.
  */
 
-@Table(database = PostsDatabase.class)
-public class Post extends BaseModel{
+public class Post {
     @SerializedName("post_id")
-    @PrimaryKey private String id;
+    private String id;
 
     @SerializedName("user")
-    @Column private String user;
+     private String user;
 
     @SerializedName("time")
-    @Column private String time;
+     private String time;
 
     @SerializedName("post")
-    @Column private String post;
+     private String post;
 
     @SerializedName("is_3fav")
-    @Column private boolean isFav;
+     private boolean isFav;
 
     @SerializedName("hashtags")
     private List<String> hashtags;
